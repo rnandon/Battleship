@@ -38,3 +38,6 @@ class Ship:
 
     def get_status(self):
         return self.status
+
+    def get_length(self):
+        return self.length
