@@ -12,6 +12,11 @@ class Game_Setup:
         # Currently leaving out set options, will navigate around it until MVP is implemented
         # After MVP, implement different options such as game modes, rules, etc.
         # self.set_options()
+
+        # Refactor this section out later
+        self.select_player_names()
+        # End section
+
         self.game = Game(self.options, self.ui)
         self.restart()
 

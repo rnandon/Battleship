@@ -1,6 +1,9 @@
 ###        IMPORTS
 ### =================================
 
+
+# TODO - add default options for now
+
 class Options:
     def __init__(self):
         self.player_names = None
