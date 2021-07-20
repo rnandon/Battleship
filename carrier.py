@@ -6,5 +6,5 @@ class Carrier(Ship):
     def __init__(self):
         super().__init__()
         self.length = 5
-        self.hit_locations = self.create_hit_locations()
+        self.create_hit_locations()
         self.name = "Carrier"
