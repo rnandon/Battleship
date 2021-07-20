@@ -29,6 +29,10 @@ class Board:
             # To let the game know something went wrong
             return -1
 
+    def update_attack_results(self, coordinates, results):
+        selected_cell = self.get_cell(coordinates)
+        selected_cell.set_status(results)
+
     def get_cell(self, coordinates):
         row = coordinates[0]
         column = coordinates[1]
@@ -47,22 +51,22 @@ class Board:
         start_row_index = row_names.find(start_row_key)
 
         # Up
-        up_cells = self.get_other_cells_in_column(self, start_column, start_row_key, -1, True)
+        up_cells = self.get_other_cells_in_column(start_column, start_row_key, -1, True)
         up_count = len(up_cells)
         directions["up"] = up_count
 
         # Down
-        down_cells = self.get_other_cells_in_column(self, start_column, start_row_index, len(row_names), True)
+        down_cells = self.get_other_cells_in_column(start_column, start_row_key, len(row_names), True)
         down_count = len(down_cells)
         directions["down"] = down_count
 
         # Left
-        left_cells = self.get_other_cells_in_row(self, self.matrix[coordinates[0]], start_column, -1, True)
+        left_cells = self.get_other_cells_in_row(self.matrix[coordinates[0]], start_column, -1, True)
         left_count = len(left_cells)
         directions["left"] = left_count
 
         # Right
-        right_cells = self.get_other_cells_in_row(self, self.matrix[coordinates[0]], start_column, len(self.matrix[coordinates[0]]), True)
+        right_cells = self.get_other_cells_in_row(self.matrix[coordinates[0]], start_column, len(self.matrix[coordinates[0]]), True)
         right_count = len(right_cells)
         directions["right"] = right_count
 
@@ -71,12 +75,11 @@ class Board:
     def get_possible_ship_placement_directions(self, ship, coordinates):
         ship_length = ship.length
         clearances = self.check_cell_clearance(coordinates)
-        possible_directions = []
+        possible_directions = {}
 
-        possible_directions.append(clearances["up"] >= ship_length)
-        possible_directions.append(clearances["right"] >= ship_length)
-        possible_directions.append(clearances["down"] >= ship_length)
-        possible_directions.append(clearances["left"] >= ship_length)
+        for key in clearances.keys():
+            enough_clearance = (clearances[key] >= ship_length)
+            possible_directions[key] = enough_clearance
 
         return possible_directions
 

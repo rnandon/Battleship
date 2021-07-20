@@ -26,8 +26,9 @@ class Fleet:
 
     def update_living_ships_count(self):
         living_ships_count = 0
-        for key, value in self.ships:
-            for ship in value:
+        for key in self.ships.keys():
+            current_ships = self.ships[key]
+            for ship in current_ships:
                 if ship.status != "Destroyed":
                     living_ships_count += 1
 

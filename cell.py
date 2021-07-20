@@ -12,6 +12,9 @@ class Cell:
         self.ship = ship
         self.hit_location = hit_location
 
+    def set_status(self, status):
+        self.status = status
+
     def check_for_hit(self):
         # Check if already hit
         if self.status == "Hit":

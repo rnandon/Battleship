@@ -58,6 +58,23 @@ class User_Interface:
         self.display_screen_restart()
         return input()
 
+    def prompt_for_ship_start_position(self):
+        return self.verify_coordinate_formatting("Select a start coordinate for ship ('A9')")
+
+    def prompt_for_ship_direction(self, possible_directions):
+        selections = []
+        for key in possible_directions.keys():
+            if possible_directions[key]:
+                selections.append(key)
+        message = "Which direction do you want to orient your ship?"
+        for selection in selections:
+            message += f' - {selection}'
+
+        return self.verify_selection_in_list(message, selections)
+
+    def prompt_for_attack_coordinates(self):
+        return self.verify_coordinate_formatting("What coordinates do you want to attack?")
+
     # - Verification
     # - - verify_selection_in_list(self, input, selections)
     def verify_selection_in_list(self, message, selections):
