@@ -168,7 +168,6 @@ class Board:
             for cell in self.matrix[row_name]:
                 output += f'{cell}|'
             output += '\n'
-
-        output += "+-------------------------------------------+\n"
+            output += "+-------------------------------------------+\n"
         
         return output
