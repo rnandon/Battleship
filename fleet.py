@@ -32,3 +32,6 @@ class Fleet:
                     living_ships_count += 1
 
         return living_ships_count
+
+    def get_living_ships_count(self):
+        return self.living_ships_count
