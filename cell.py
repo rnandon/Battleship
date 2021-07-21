@@ -11,6 +11,7 @@ class Cell:
     def set_ship(self, ship, hit_location):
         self.ship = ship
         self.hit_location = hit_location
+        self.status = "Ship"
 
     def set_status(self, status):
         self.status = status
@@ -40,8 +41,10 @@ class Cell:
 
     def __repr__(self):
         if self.status == "Miss":
-            return "   "
+            return " M "
         elif self.status == "Hit":
             return " H "
+        elif self.status == "Ship":
+            return " S "
         else:
             return "   "
