@@ -101,6 +101,13 @@ class User_Interface:
     def prompt_for_attack_coordinates(self):
         return self.verify_coordinate_formatting(f"{self.left_pad_large}What coordinates do you want to attack?")
 
+    def prompt_for_placement_option(self, player):
+        selection = input(f"{self.left_pad_large}{player.name}: do you want to place ships automatically? (Y/N)")
+        if selection == "y" or selection == "Y":
+            return True
+        else:
+            return False
+
     # - Verification
     # - - verify_selection_in_list(self, input, selections)
     def verify_selection_in_list(self, message, selections, options):

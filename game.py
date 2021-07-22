@@ -1,6 +1,7 @@
 ###        IMPORTS
 ### =================================
 from player import Player
+from random import randint
 
 
 class Game:
@@ -25,13 +26,17 @@ class Game:
     # - Initialize with prompt & setup results
     def place_ships(self, player):
         self.ui.display_screen_turn_start(player)
+        automatic_placement = self.ui.prompt_for_placement_option(player)
         ships_to_place = []
         for key in player.fleet.ships.keys():
             current_ships = player.fleet.ships[key]
             for ship in current_ships:
                 ships_to_place.append(ship)
         for ship in ships_to_place:
-            self.get_input_and_place_ship(ship, player)
+            if automatic_placement:
+                self.automatically_place_ships(ship, player)
+            else:
+                self.get_input_and_place_ship(ship, player)
     
     def get_input_and_place_ship(self, ship, player):
         self.ui.display_screen_player_board(player)
@@ -51,9 +56,22 @@ class Game:
             print("Invalid selection, please try again")
             self.get_input_and_place_ship(ship, player)
 
+    def automatically_place_ships(self, ship, player):
+        rows = "ABCDEFGHIJ"
+        columns = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    # - Player one place ships
-    # - Player two place ships
+        row_selection = rows[randint(0, 9)]
+        column_selection = columns[randint(0, 9)]
+        selected_coordinates = (row_selection, column_selection)
+
+        possible_directions = player.player_board.get_possible_ship_placement_directions(ship, selected_coordinates)
+        possible_directions_filtered = [key for key in possible_directions.keys() if possible_directions[key]]
+
+        if len(possible_directions_filtered) == 0:
+            self.automatically_place_ships(ship, player)
+        else:
+            selected_direction = possible_directions_filtered[randint(0, len(possible_directions_filtered)-1)]
+            player.place_ship(ship, selected_coordinates, selected_direction)
 
     def run_game(self):
         while not self.winner:
@@ -66,7 +84,7 @@ class Game:
         self.end_game()
 
     def player_turn(self, player, opponent, repeated=False):
-        if repeated:
+        if not repeated:
             self.ui.display_screen_turn_start(player)
             self.ui.display_screen_game(player)
 
