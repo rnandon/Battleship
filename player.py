@@ -14,6 +14,7 @@ class Player:
         self.player_board.place_ship(ship, start_coordinate, direction)
 
     def check_for_defeat(self):
+        self.fleet.update_living_ships_count()
         if self.fleet.living_ships_count == 0:
             return True
         else:

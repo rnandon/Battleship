@@ -4,13 +4,17 @@ from player import Player
 
 
 class Game:
-    def __init__(self, options, ui):
+    def __init__(self, options, ui, testing=False):
         self.player1 = Player(options.player_names[0], options.ship_counts)
         self.player2 = Player(options.player_names[1], options.ship_counts)
         self.winner = None
         self.ui = ui
-        self.player_setup()
-        self.run_game()
+        if not testing:
+            self.player_setup()
+            self.run_game()
+        if testing:
+            self.test_setup()
+            self.test_run_game()
 
     def player_setup(self):
         self.place_ships(self.player1)
@@ -29,8 +33,15 @@ class Game:
         for ship in ships_to_place:
             selected_coordinates = self.ui.prompt_for_ship_start_position()
             possible_directions = player_board.get_possible_ship_placement_directions(ship, selected_coordinates)
-            selected_direction = self.ui.prompt_for_ship_direction(possible_directions)
-            player.place_ship(ship, selected_coordinates, selected_direction)
+            # Check to make sure this is a valid cell and that there are possible directions to choose from 
+            has_possible_directions = False
+            for direction in possible_directions:
+                if direction:
+                    has_possible_directions = True
+
+            if has_possible_directions:
+                selected_direction = self.ui.prompt_for_ship_direction(possible_directions)
+                player.place_ship(ship, selected_coordinates, selected_direction)
 
     # - Player one place ships
     # - Player two place ships
@@ -78,3 +89,37 @@ class Game:
     # - exit while loop when winner
     # - display exit
     # - prompt restart
+
+    def test_setup(self):
+        self.test_place_ships(self.player1)
+        self.test_place_ships(self.player2)
+
+    def test_run_game(self):
+        self.test_player_turns() 
+        self.end_game()
+
+    def test_player_turns(self):
+        for letter in "ABCDE":
+            for number in [0, 1, 2, 3, 4]:
+                attack_coordinates = (letter, number)
+                result = self.player2.player_board.check_for_hit(attack_coordinates)
+                self.player1.update_attack_results(attack_coordinates, result)
+                print(self.player1.tracker_board)
+                print(self.player2.player_board)
+                self.check_for_winner()
+                if self.winner:
+                    return
+
+
+    def test_place_ships(self, player):
+        row_names = "ABCDE"
+        row_index = 0
+        i = 0
+        ships_to_place = []
+        for key in player.fleet.ships.keys():
+            current_ships = player.fleet.ships[key]
+            for ship in current_ships:
+                ships_to_place.append(ship)
+        for ship in ships_to_place:
+            player.place_ship(ship, (row_names[i], row_index), "right")
+            i += 1
