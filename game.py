@@ -31,6 +31,7 @@ class Game:
             for ship in current_ships:
                 ships_to_place.append(ship)
         for ship in ships_to_place:
+            self.ui.display_screen_player_board(player)
             selected_coordinates = self.ui.prompt_for_ship_start_position()
             possible_directions = player_board.get_possible_ship_placement_directions(ship, selected_coordinates)
             # Check to make sure this is a valid cell and that there are possible directions to choose from 

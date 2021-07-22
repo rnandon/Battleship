@@ -101,7 +101,7 @@ class Board:
         elif direction == "right":
             additional_cells = self.get_other_cells_in_row(start_row, start_column_index, len(start_row))
         else:
-            additional_cells = self.get_other_cells_in_row(start_row, 0, start_column_index)
+            additional_cells = self.get_other_cells_in_row(start_row, start_column_index, 0)
 
         for i in range(ship_length):
             ship_placement_cells.append(additional_cells[i])

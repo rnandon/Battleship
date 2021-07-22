@@ -26,6 +26,9 @@ class User_Interface:
         print(player.player_board)
         print(player.tracker_board)
 
+    def display_screen_player_board(self, player):
+        print(player.player_board)
+
     # - - display_screen_outcome(self, outcome)
     def display_screen_outcome(self, outcome):
         print(outcome)
@@ -36,13 +39,13 @@ class User_Interface:
 
     # - - display_screen_restart(self)
     def display_screen_restart(self):
-        print("Play again?")
+        print("Play again?  ")
 
     # - Prompts
     # - - prompt_options_player_names(self)
     def prompt_options_player_names(self):
-        name1 = input("What is player one's name?")
-        name2 = input("What is player two's name?")
+        name1 = input("What is player one's name?  ")
+        name2 = input("What is player two's name?  ")
         return [name1, name2]
 
     # - - prompt_options_ships(self)
@@ -66,9 +69,9 @@ class User_Interface:
         for key in possible_directions.keys():
             if possible_directions[key]:
                 selections.append(key)
-        message = "Which direction do you want to orient your ship?"
+        message = "Which direction do you want to orient your ship?\n"
         for selection in selections:
-            message += f' - {selection}'
+            message += f' - {selection}\n'
 
         return self.verify_selection_in_list(message, selections)
 
