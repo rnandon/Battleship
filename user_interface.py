@@ -47,7 +47,7 @@ class User_Interface:
 
     # - - display_screen_winner(self, winner)
     def display_screen_winner(self, winner):
-        print(f'{winner.name} wins!')
+        print(f'{self.left_pad_large}{winner.name} wins!')
 
     # - - display_screen_restart(self)
     def display_screen_restart(self):
@@ -57,8 +57,13 @@ class User_Interface:
     # - Prompts
     # - - prompt_options_player_names(self)
     def prompt_options_player_names(self):
-        name1 = input(f"{self.left_pad_large}What is player one's name?  ")
-        name2 = input(f"{self.left_pad_large}What is player two's name?  ")
+        name1 = ""
+        name2 = ""
+
+        while name1 == "":
+            name1 = input(f"{self.left_pad_large}What is player one's name?  ")
+        while name2 == "":
+            name2 = input(f"{self.left_pad_large}What is player two's name?  ")
         return [name1, name2]
 
     # - - prompt_options_ships(self)
