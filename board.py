@@ -90,7 +90,7 @@ class Board:
         start_row = self.matrix[start_coordinate[0]]
         
         ship_placement_cells = []
-        ship_placement_cells.append(self.get_cell(start_coordinate))
+        #ship_placement_cells.append(self.get_cell(start_coordinate))
 
         additional_cells = []
 
@@ -103,7 +103,7 @@ class Board:
         else:
             additional_cells = self.get_other_cells_in_row(start_row, 0, start_column_index)
 
-        for i in range(ship_length-1):
+        for i in range(ship_length):
             ship_placement_cells.append(additional_cells[i])
 
         self.fill_cells(ship, ship_placement_cells)
