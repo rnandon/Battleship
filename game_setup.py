@@ -48,6 +48,6 @@ class Game_Setup:
             self.set_options()
             self.game = Game(self.player_names, self.ship_count, self.rules)
         else:
-            self.ui.display_exit()
+            self.ui.display_screen_exit()
 
     

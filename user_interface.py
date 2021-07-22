@@ -4,7 +4,7 @@
 
 class User_Interface:
     def __init__(self):
-        pass
+        self.end = '\n'
 
     # Sections
     # - Special strings
@@ -27,7 +27,8 @@ class User_Interface:
         print(screen_game)
 
     def display_screen_player_board(self, player):
-        print(player.player_board)
+        screen_player_board = self.format_display_screen_player_board(player)
+        print(screen_player_board)
 
     # - - display_screen_outcome(self, outcome)
     def display_screen_outcome(self, outcome):
@@ -132,7 +133,6 @@ class User_Interface:
         output += f'*{self.center_value_in_space("||", 104)}*\n'
         for i in range(len(split_player_board)):
             output += f'*{self.center_value_in_space(split_player_board[i], 51)}||{self.center_value_in_space(split_tracker_board[i], 51)}*\n'
-        output += f'*{self.center_value_in_space("||", 104)}*\n'
         output += f'{"*" * 106}\n'
 
         return output
@@ -148,4 +148,23 @@ class User_Interface:
         right_pad = total_columns - left_pad - value_length
 
         output = f"{' ' * left_pad}{value}{' ' * right_pad}"
+        return output
+
+    def format_display_screen_player_board(self, player):
+        player_board = player.player_board.printable
+        split_player_board = player_board.split("\n")
+
+        output = ""
+        output += f'{"*" * 53}{self.end}'
+        output += f'*{self.center_value_in_space(player.name, 51)}*{self.end}'
+        output += f'{"*" * 53}{self.end}'
+        output += f'*{self.center_value_in_space("PLACE YOUR SHIPS", 51)}*{self.end}'
+        output += f'{"*" * 53}{self.end}'
+        output += f'*{" " * 51}*{self.end}'
+        for i in range(len(split_player_board)):
+            output += f'*{self.center_value_in_space(split_player_board[i], 51)}*{self.end}'
+        output += f'{"*" * 53}{self.end}'
+
+
+
         return output
