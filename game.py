@@ -24,25 +24,32 @@ class Game:
     # - Prompts & setup
     # - Initialize with prompt & setup results
     def place_ships(self, player):
-        player_board = player.player_board
         ships_to_place = []
         for key in player.fleet.ships.keys():
             current_ships = player.fleet.ships[key]
             for ship in current_ships:
                 ships_to_place.append(ship)
         for ship in ships_to_place:
-            self.ui.display_screen_player_board(player)
-            selected_coordinates = self.ui.prompt_for_ship_start_position()
-            possible_directions = player_board.get_possible_ship_placement_directions(ship, selected_coordinates)
-            # Check to make sure this is a valid cell and that there are possible directions to choose from 
-            has_possible_directions = False
-            for direction in possible_directions:
-                if direction:
-                    has_possible_directions = True
+            self.get_input_and_place_ship(ship, player)
+    
+    def get_input_and_place_ship(self, ship, player):
+        self.ui.display_screen_player_board(player)
+        selected_coordinates = self.ui.prompt_for_ship_start_position()
+        possible_directions = player.player_board.get_possible_ship_placement_directions(ship, selected_coordinates)
+        # Check to make sure this is a valid cell and that there are possible directions to choose from 
+        has_possible_directions = False
+        for direction in possible_directions:
+            if possible_directions[direction]:
+                has_possible_directions = True
+                break
 
-            if has_possible_directions:
-                selected_direction = self.ui.prompt_for_ship_direction(possible_directions)
-                player.place_ship(ship, selected_coordinates, selected_direction)
+        if has_possible_directions:
+            selected_direction = self.ui.prompt_for_ship_direction(possible_directions)
+            player.place_ship(ship, selected_coordinates, selected_direction)
+        else:
+            print("Invalid selection, please try again")
+            self.get_input_and_place_ship(ship, player)
+
 
     # - Player one place ships
     # - Player two place ships
