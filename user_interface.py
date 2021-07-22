@@ -1,9 +1,12 @@
 ###        IMPORTS
 ### =================================
-
+import os
+from time import sleep
 
 class User_Interface:
     def __init__(self):
+        self.left_pad_small = '\t'
+        self.left_pad_large = '\t\t\t\t'
         self.end = '\n'
 
     # Sections
@@ -20,7 +23,12 @@ class User_Interface:
 
     # - - display_screen_exit(self)
     def display_screen_exit(self):
-        print("Thanks for playing Battleship!")
+        screen_exit = self.format_display_screen_exit()
+        print(screen_exit)
+
+    def display_screen_turn_start(self, player):
+        screen_turn_start = self.format_display_screen_turn_start(player)
+        input(screen_turn_start)
 
     # - - display_screen_game(self, player)
     def display_screen_game(self, player):
@@ -28,12 +36,14 @@ class User_Interface:
         print(screen_game)
 
     def display_screen_player_board(self, player):
+        self.clear_console()
         screen_player_board = self.format_display_screen_player_board(player)
         print(screen_player_board)
 
     # - - display_screen_outcome(self, outcome)
     def display_screen_outcome(self, outcome):
-        print(outcome)
+        print(f"{self.left_pad_large}{outcome}")
+        sleep(1)
 
     # - - display_screen_winner(self, winner)
     def display_screen_winner(self, winner):
@@ -46,8 +56,8 @@ class User_Interface:
     # - Prompts
     # - - prompt_options_player_names(self)
     def prompt_options_player_names(self):
-        name1 = input("What is player one's name?  ")
-        name2 = input("What is player two's name?  ")
+        name1 = input(f"{self.left_pad_large}What is player one's name?  ")
+        name2 = input(f"{self.left_pad_large}What is player two's name?  ")
         return [name1, name2]
 
     # - - prompt_options_ships(self)
@@ -64,21 +74,22 @@ class User_Interface:
         return input()
 
     def prompt_for_ship_start_position(self):
-        return self.verify_coordinate_formatting("Select a start coordinate for ship ('A9')")
+        return self.verify_coordinate_formatting(f"{self.left_pad_large}Select a start coordinate for ship ('A9')")
 
     def prompt_for_ship_direction(self, possible_directions):
         selections = []
         for key in possible_directions.keys():
             if possible_directions[key]:
                 selections.append(key)
-        message = "Which direction do you want to orient your ship?\n"
+        message = f"{self.left_pad_large}Which direction do you want to orient your ship?\n"
         for selection in selections:
-            message += f' - {selection}\n'
+            message += f'{self.left_pad_large}{self.left_pad_small} - {selection}\n'
+        message += f"{self.left_pad_large}"
 
         return self.verify_selection_in_list(message, selections)
 
     def prompt_for_attack_coordinates(self):
-        return self.verify_coordinate_formatting("What coordinates do you want to attack?")
+        return self.verify_coordinate_formatting(f"{self.left_pad_large}What coordinates do you want to attack?")
 
     # - Verification
     # - - verify_selection_in_list(self, input, selections)
@@ -98,7 +109,7 @@ class User_Interface:
         user_selection = ""
         while invalid_selection:
             user_selection = input(message)
-            if len(user_selection) == 2 and user_selection[0] in "ABCDEFGHIJ" and user_selection[1] in "0123456789":
+            if len(user_selection) == 2 and user_selection[0].upper() in "ABCDEFGHIJ" and user_selection[1] in "0123456789":
                 invalid_selection = False
 
         return self.format_coordinates(user_selection)
@@ -141,7 +152,17 @@ class User_Interface:
 
     # - - format_display_screen_winner(self, winner)
     def format_display_screen_winner(self, winner):
-        pass
+        self.clear_console()
+        output = "\n\n"
+
+        output += f'{self.left_pad_large}*******************************************\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}***               WINNER:               ***\n'
+        output += f'{self.left_pad_large}***{self.center_value_in_space(winner.name, 37)}***\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}*******************************************\n\n'
+
+        return output
 
     def center_value_in_space(self, value, total_columns):
         value_length = len(value)
@@ -156,25 +177,53 @@ class User_Interface:
         split_player_board = player_board.split("\n")
 
         output = ""
-        output += f'{"*" * 53}{self.end}'
-        output += f'*{self.center_value_in_space(player.name, 51)}*{self.end}'
-        output += f'{"*" * 53}{self.end}'
-        output += f'*{self.center_value_in_space("PLACE YOUR SHIPS", 51)}*{self.end}'
-        output += f'{"*" * 53}{self.end}'
-        output += f'*{" " * 51}*{self.end}'
+        output += f'{self.left_pad_large}{"*" * 53}{self.end}'
+        output += f'{self.left_pad_large}*{self.center_value_in_space(player.name, 51)}*{self.end}'
+        output += f'{self.left_pad_large}{"*" * 53}{self.end}'
+        output += f'{self.left_pad_large}*{self.center_value_in_space("PLACE YOUR SHIPS", 51)}*{self.end}'
+        output += f'{self.left_pad_large}{"*" * 53}{self.end}'
+        output += f'{self.left_pad_large}*{" " * 51}*{self.end}'
         for i in range(len(split_player_board)):
-            output += f'*{self.center_value_in_space(split_player_board[i], 51)}*{self.end}'
-        output += f'{"*" * 53}{self.end}'
+            output += f'{self.left_pad_large}*{self.center_value_in_space(split_player_board[i], 51)}*{self.end}'
+        output += f'{self.left_pad_large}{"*" * 53}{self.end}'
 
         return output
 
     def format_display_screen_welcome(self):
         output = "\n\n"
 
-        output += '\t\t*******************************************\n'
-        output += '\t\t***                                     ***\n'
-        output += '\t\t***        WELCOME TO BATTLESHIP        ***\n'
-        output += '\t\t***                                     ***\n'
-        output += '\t\t*******************************************\n\n'
+        output += f'{self.left_pad_large}*******************************************\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}***        WELCOME TO BATTLESHIP        ***\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}*******************************************\n\n'
 
         return output
+
+    def format_display_screen_turn_start(self, player):
+        self.clear_console()
+        output = "\n\n\n\n"
+
+        output += f'{self.left_pad_large}*******************************************\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}***{self.center_value_in_space(player.name, 37)}***\n'
+        output += f"{self.left_pad_large}***            IT'S YOUR TURN           ***\n"
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}*******************************************\n\n'
+
+        return output
+
+    def format_display_screen_exit(self):
+        output = "\n\n"
+
+        output += f'{self.left_pad_large}*******************************************\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}***        THANK YOU FOR PLAYING        ***\n'
+        output += f'{self.left_pad_large}***                                     ***\n'
+        output += f'{self.left_pad_large}*******************************************\n\n'
+
+        return output
+
+
+    def clear_console(self):
+        os.system('cls' if os.name == 'nt' else "clear")

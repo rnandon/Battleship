@@ -24,6 +24,7 @@ class Game:
     # - Prompts & setup
     # - Initialize with prompt & setup results
     def place_ships(self, player):
+        self.ui.display_screen_turn_start(player)
         ships_to_place = []
         for key in player.fleet.ships.keys():
             current_ships = player.fleet.ships[key]
@@ -65,6 +66,7 @@ class Game:
         self.end_game()
 
     def player_turn(self, player, opponent):
+        self.ui.display_screen_turn_start(player)
         self.ui.display_screen_game(player)
 
         attack_coordinates = self.ui.prompt_for_attack_coordinates()
