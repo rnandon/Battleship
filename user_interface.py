@@ -23,8 +23,8 @@ class User_Interface:
 
     # - - display_screen_game(self, player)
     def display_screen_game(self, player):
-        print(player.player_board)
-        print(player.tracker_board)
+        screen_game = self.format_display_screen_game(player)
+        print(screen_game)
 
     def display_screen_player_board(self, player):
         print(player.player_board)
@@ -117,8 +117,35 @@ class User_Interface:
 
     # - - format_display_screen_game(self, player)
     def format_display_screen_game(self, player):
-        pass
+        player_board = player.player_board.printable
+        tracker_board = player.tracker_board.printable
+
+        split_player_board = player_board.split("\n")
+        split_tracker_board = tracker_board.split("\n")
+
+        output = ""
+        output += f'{"*" * 106}\n'
+        output += f'*{self.center_value_in_space(player.name, 104)}*\n'
+        output += f'{"*" * 106}\n'
+        output += f'*{self.center_value_in_space("YOUR SHIPS", 51)}||{self.center_value_in_space("TRACKER BOARD", 51)}*\n'
+        output += f'{"*" * 106}\n'
+        output += f'*{self.center_value_in_space("||", 104)}*\n'
+        for i in range(len(split_player_board)):
+            output += f'*{self.center_value_in_space(split_player_board[i], 51)}||{self.center_value_in_space(split_tracker_board[i], 51)}*\n'
+        output += f'*{self.center_value_in_space("||", 104)}*\n'
+        output += f'{"*" * 106}\n'
+
+        return output
+
 
     # - - format_display_screen_winner(self, winner)
     def format_display_screen_winner(self, winner):
         pass
+
+    def center_value_in_space(self, value, total_columns):
+        value_length = len(value)
+        left_pad = (total_columns - value_length) // 2
+        right_pad = total_columns - left_pad - value_length
+
+        output = f"{' ' * left_pad}{value}{' ' * right_pad}"
+        return output

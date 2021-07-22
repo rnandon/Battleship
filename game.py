@@ -65,6 +65,8 @@ class Game:
         self.end_game()
 
     def player_turn(self, player, opponent):
+        self.ui.display_screen_game(player)
+
         attack_coordinates = self.ui.prompt_for_attack_coordinates()
         result = opponent.player_board.check_for_hit(attack_coordinates)
 

@@ -5,6 +5,8 @@ from cell import Cell
 class Board:
     def __init__(self):
         self.matrix = self.build_board()
+        self.printable = ""
+        self.stringify_board()
 
     def build_board(self):
         # Build a dictionary of rows for coordinate access
@@ -19,6 +21,7 @@ class Board:
         # Get the appropriate cell and its hit status
         selected_cell = self.get_cell(coordinates)
         cell_hit_status = selected_cell.check_for_hit()
+        self.stringify_board()
 
         # Return status message
         if cell_hit_status == 1:
@@ -32,6 +35,7 @@ class Board:
     def update_attack_results(self, coordinates, results):
         selected_cell = self.get_cell(coordinates)
         selected_cell.set_status(results)
+        self.stringify_board()
 
     def get_cell(self, coordinates):
         row = coordinates[0]
@@ -107,6 +111,7 @@ class Board:
             ship_placement_cells.append(additional_cells[i])
 
         self.fill_cells(ship, ship_placement_cells)
+        self.stringify_board()
 
     def fill_cells(self, ship, ship_placement_cells):
         for i in range(len(ship_placement_cells)):
@@ -158,7 +163,7 @@ class Board:
 
         return cells
 
-    def __repr__(self):
+    def stringify_board(self):
         output = ""
 
         row_names = "ABCDEFGHIJ"
@@ -173,4 +178,8 @@ class Board:
             output += '\n'
             output += "+-------------------------------------------+\n"
         
-        return output
+        self.printable = output
+
+
+    def __repr__(self):
+        return self.printable
