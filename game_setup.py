@@ -44,7 +44,7 @@ class Game_Setup:
 
     def restart(self):
         user_selection = self.ui.prompt_restart()
-        if user_selection == "y":
+        if user_selection == "y" or user_selection == "Y":
             self.set_options()
             self.game = Game(self.player_names, self.ship_count, self.rules)
         else:

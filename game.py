@@ -65,16 +65,17 @@ class Game:
             
         self.end_game()
 
-    def player_turn(self, player, opponent):
-        self.ui.display_screen_turn_start(player)
-        self.ui.display_screen_game(player)
+    def player_turn(self, player, opponent, repeated=False):
+        if repeated:
+            self.ui.display_screen_turn_start(player)
+            self.ui.display_screen_game(player)
 
         attack_coordinates = self.ui.prompt_for_attack_coordinates()
         result = opponent.player_board.check_for_hit(attack_coordinates)
 
         if result == -1:
             print("Something went wrong, try again")
-            self.player_turn(player, opponent)
+            self.player_turn(player, opponent, True)
         else:
             player.update_attack_results(attack_coordinates, result)
             self.ui.display_screen_outcome(result)
@@ -92,7 +93,8 @@ class Game:
         
 
     def end_game(self):
-        pass
+        self.ui.display_screen_winner(self.winner)
+
     # - enter while loop
     # - - Player one turn
     # - - - Check for winner

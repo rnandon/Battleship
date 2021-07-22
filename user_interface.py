@@ -51,7 +51,8 @@ class User_Interface:
 
     # - - display_screen_restart(self)
     def display_screen_restart(self):
-        print("Play again?  ")
+        print(f"{self.left_pad_large}Play again? (Y/N):   ")
+
 
     # - Prompts
     # - - prompt_options_player_names(self)
@@ -71,29 +72,33 @@ class User_Interface:
     # - - prompt_restart(self)
     def prompt_restart(self):
         self.display_screen_restart()
-        return input()
+        return input(f"{self.left_pad_large}")
 
     def prompt_for_ship_start_position(self):
         return self.verify_coordinate_formatting(f"{self.left_pad_large}Select a start coordinate for ship ('A9')")
 
     def prompt_for_ship_direction(self, possible_directions):
         selections = []
+        options = []
+        i = 1
         for key in possible_directions.keys():
             if possible_directions[key]:
-                selections.append(key)
+                selections.append(f'{i}')
+                options.append(key)
+                i += 1
         message = f"{self.left_pad_large}Which direction do you want to orient your ship?\n"
-        for selection in selections:
-            message += f'{self.left_pad_large}{self.left_pad_small} - {selection}\n'
+        for i in range(len(selections)):
+            message += f'{self.left_pad_large}{self.left_pad_small} -{selections[i]}- {options[i]}\n'
         message += f"{self.left_pad_large}"
 
-        return self.verify_selection_in_list(message, selections)
+        return self.verify_selection_in_list(message, selections, options)
 
     def prompt_for_attack_coordinates(self):
         return self.verify_coordinate_formatting(f"{self.left_pad_large}What coordinates do you want to attack?")
 
     # - Verification
     # - - verify_selection_in_list(self, input, selections)
-    def verify_selection_in_list(self, message, selections):
+    def verify_selection_in_list(self, message, selections, options):
         invalid_selection = True
         user_selection = ""
         while invalid_selection:
@@ -101,7 +106,7 @@ class User_Interface:
             if user_selection in selections:
                 invalid_selection = False
 
-        return user_selection
+        return options[int(user_selection)-1]
 
     # - - verify_coordinate_formatting(self, input)
     def verify_coordinate_formatting(self, message):
@@ -120,7 +125,7 @@ class User_Interface:
     # - Formatting
     # - - format_coordinates(self, coordinates)
     def format_coordinates(self, coordinates):
-        row = coordinates[0]
+        row = coordinates[0].upper()
         column = int(coordinates[1])
         return (row, column)
 
