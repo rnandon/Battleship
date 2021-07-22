@@ -28,7 +28,7 @@ class Game_Setup:
             self.game = Game(self.options, self.ui, testing)
 
     def set_options(self):
-        self.ui.display_welcome()
+        self.ui.display_screen_welcome()
         self.select_player_names()
         self.select_ship_count()
         self.select_rules()

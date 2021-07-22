@@ -15,7 +15,8 @@ class User_Interface:
 
     # - - display_screen_welcome(self)
     def display_screen_welcome(self):
-        print("Welcome to Battleship!")
+        screen_welcome = self.format_display_screen_welcome()
+        print(screen_welcome)
 
     # - - display_screen_exit(self)
     def display_screen_exit(self):
@@ -165,6 +166,15 @@ class User_Interface:
             output += f'*{self.center_value_in_space(split_player_board[i], 51)}*{self.end}'
         output += f'{"*" * 53}{self.end}'
 
+        return output
 
+    def format_display_screen_welcome(self):
+        output = "\n\n"
+
+        output += '\t\t*******************************************\n'
+        output += '\t\t***                                     ***\n'
+        output += '\t\t***        WELCOME TO BATTLESHIP        ***\n'
+        output += '\t\t***                                     ***\n'
+        output += '\t\t*******************************************\n\n'
 
         return output
